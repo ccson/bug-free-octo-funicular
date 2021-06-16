@@ -13,7 +13,8 @@ RUN apt-get update -yqq && \
     gcc \
     musl-dev \
     libpq-dev \
-    libc-dev
+    libc-dev \
+    ffmpeg
 
 RUN pip3 install pipenv
 

@@ -20,7 +20,7 @@ class TranscodingMetadata(db.Model):
     __tablename__ = 'transcoding_metadata'
 
     tmdb_id = db.Column(db.Integer, primary_key=True)
-    done_transcoding = db.Column(db.Boolean())
+    done_transcoding = db.Column(db.Boolean(), default=False)
     transcode_timestamp = db.Column(db.DateTime())
     transcode_file_size = db.Column(db.BigInteger())
     original_file_size = db.Column(db.BigInteger())

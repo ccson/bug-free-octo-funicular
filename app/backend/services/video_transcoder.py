@@ -3,11 +3,11 @@ import ffmpeg
 
 class VideoTranscoder(object):
 
-    def __init__(self, tmdb_id):
-        self.tmdb_id = tmdb_id
+    OUTPUT_FOLDER = '/completed'
 
-    def run(self):
-        stream = ffmpeg.input(f'{self.tmdb_id}')
+    @staticmethod
+    def run(imdb_id, file_extension):
+        stream = ffmpeg.input(f'{imdb_id}.{file_extension}')
         stream = ffmpeg.hflip(stream)
-        stream = ffmpeg.output(stream, 'output.h264', **{'-b:v': '1M'})
+        stream = ffmpeg.output(stream, f'{VideoTranscoder.OUTPUT_FOLDER}/{imdb_id}.h264', **{'video_bitrate': '1000'})
         ffmpeg.run(stream)
