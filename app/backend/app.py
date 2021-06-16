@@ -1,18 +1,17 @@
 from flask import Flask
 from flask import request
 
-from .model import TranscodingMetadata, TmdbMetadata
+from .init import create_app
+from .model import Movie, TranscodingMetadata
 
-from .tmdb_service import TmdbService
-from .video_transcoder import VideoTranscoder
+from .services.tmdb_service import TmdbService
 
-
-app = Flask(__name__)
+app = create_app()
 
 
 @app.route('/', methods=['GET'])
-def hello():
-    return "Hello World!"
+def index():
+    return 'Hello World!'
 
 
 @app.route('/movie_details', methods=['GET'])

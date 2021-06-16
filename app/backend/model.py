@@ -1,35 +1,27 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from sqlalchemy import BigInteger, Boolean, Column, Date, DateTime, Integer, Numeric, SmallInteger, String
-from sqlalchemy.ext.declarative import declarative_base
+import flask_sqlalchemy
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://app:postgres@db:5432/app"
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-Base = declarative_base()
+db = flask_sqlalchemy.SQLAlchemy()
 
 
-class TranscodingMetadata(Base):
+class Movie(db.Model):
+    __tablename__ = 'movie'
+
+    tmdb_id = db.Column(db.Integer, primary_key=True)
+    title_name = db.Column(db.String(256))
+    release_year = db.Column(db.Date())
+    film_rating = db.Column(db.String(12))
+    runtime = db.Column(db.SmallInteger())
+    genres = db.Column(db.String(256))
+    poster_artwork = db.Column(db.String(256))
+    rating = db.Column(db.Numeric())
+
+
+class TranscodingMetadata(db.Model):
     __tablename__ = 'transcoding_metadata'
 
-    tmdb_id = Column(Integer, primary_key=True)
-    done_transcoding = Column(Boolean())
-    transcode_timestamp = Column(DateTime())
-    transcode_file_size = Column(BigInteger())
-    original_file_size = Column(BigInteger())
+    tmdb_id = db.Column(db.Integer, primary_key=True)
+    done_transcoding = db.Column(db.Boolean())
+    transcode_timestamp = db.Column(db.DateTime())
+    transcode_file_size = db.Column(db.BigInteger())
+    original_file_size = db.Column(db.BigInteger())
 
-
-class TmdbMetadata(Base):
-    __tablename__ = 'tmdb_metadata'
-
-    tmdb_id = Column(Integer, primary_key=True)
-    title_name = Column(String(256))
-    release_year = Column(Date())
-    film_rating = Column(String(12))
-    runtime = Column(SmallInteger())
-    genres = Column(String(256))
-    poster_artwork = Column(String(256))
-    rating = Column(Numeric())

@@ -7,7 +7,7 @@ from decimal import Decimal
 class TmdbService(object):
 
     BASE_URL = 'https://api.themoviedb.org/3/movie'
-    API_KEY = '0cc618d6f56c44414a4f82520b76f45f'
+    API_KEY = 'XXXX'
 
     @staticmethod
     def get_movie_details(tmdb_id):
@@ -29,4 +29,5 @@ class TmdbService(object):
             url=f'{TmdbService.BASE_URL}/{tmdb_id}?api_key={TmdbService.API_KEY}',
             headers={'Content-Type': 'application/json;charset=utf-8'}
         )
+        get_response.raise_for_status()
         return get_response.json()
