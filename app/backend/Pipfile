@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ffmpeg-python = "==0.2.0"
+Flask = "==2.0.1"
+Flask-Migrate = "==3.0.1"
+Flask-SQLAlchemy = "==2.5.1"
+psycopg2 = "==2.8.6"
+requests = "==2.25.1"
