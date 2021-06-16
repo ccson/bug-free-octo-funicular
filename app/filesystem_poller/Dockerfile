@@ -4,6 +4,9 @@ ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV FLASK_APP app
 
+RUN mkdir /uploads
+RUN mkdir /complete
+
 WORKDIR /app
 
 RUN apt-get update -yqq && \
