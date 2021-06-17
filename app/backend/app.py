@@ -1,6 +1,7 @@
 import json
 
-from flask import request
+from flask import request, jsonify
+from sqlalchemy.orm import contains_eager
 
 from . import app, db
 from .model import Movie, TranscodingMetadata
@@ -13,18 +14,28 @@ with app.app_context():
     db.session.commit()
 
 
+@app.route('/')
+def root():
+    return 'Welcome!'
+
+
 @app.route('/health_check')
 def health_check():
     db.engine.execute('SELECT 1')
     return '', 200
 
 
-@app.route('/', methods=['GET'])
+@app.route('/movie_details', methods=['GET'])
 def get_movie_details():
-    return str(Movie.query \
+    result = db.session \
+        .query(Movie, TranscodingMetadata) \
         .join(TranscodingMetadata, Movie.imdb_id == TranscodingMetadata.imdb_id) \
-        .add_columns(Movie.title_name) \
-        .all())
+        .filter(TranscodingMetadata.done_transcoding == True) \
+        .all()
+    result = [{**(json.loads(str(row[0]))), **(json.loads(str(row[1])))} for row in result]
+    response = jsonify(result)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response, 200
 
 
 @app.route('/transcode', methods=['POST'])
