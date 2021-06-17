@@ -33,7 +33,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - $HOME/upload:/upload
+      - $HOME/uploads:/uploads
       - $HOME/complete:/complete
 
 #  frontend:

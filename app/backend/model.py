@@ -1,27 +1,50 @@
-import flask_sqlalchemy
-
-db = flask_sqlalchemy.SQLAlchemy()
+from . import app, db
 
 
 class Movie(db.Model):
     __tablename__ = 'movie'
 
-    tmdb_id = db.Column(db.Integer, primary_key=True)
+    imdb_id = db.Column(db.String(24), primary_key=True)
     title_name = db.Column(db.String(256))
-    release_year = db.Column(db.Date())
+    release_year = db.Column(db.SmallInteger())
     film_rating = db.Column(db.String(12))
     runtime = db.Column(db.SmallInteger())
     genres = db.Column(db.String(256))
     poster_artwork = db.Column(db.String(256))
     rating = db.Column(db.Numeric())
 
+    def __init__(self, imdb_id, title_name, release_year, film_rating, runtime, genres, poster_artwork, rating):
+        self.imdb_id = imdb_id
+        self.title_name = title_name
+        self.release_year = release_year
+        self.film_rating = film_rating
+        self.runtime = runtime
+        self.genres = genres
+        self.poster_artwork = poster_artwork
+        self.rating = rating
+
 
 class TranscodingMetadata(db.Model):
     __tablename__ = 'transcoding_metadata'
 
-    tmdb_id = db.Column(db.Integer, primary_key=True)
+    imdb_id = db.Column(db.String(24), primary_key=True)
     done_transcoding = db.Column(db.Boolean(), default=False)
     transcode_timestamp = db.Column(db.DateTime())
     transcode_file_size = db.Column(db.BigInteger())
     original_file_size = db.Column(db.BigInteger())
 
+    def __init__(self, imdb_id, done_transcoding):
+        self.imdb_id = imdb_id
+        self.done_transcoding = done_transcoding
+
+    def set_done_transcoding(self, done_transcoding):
+        self.done_transcoding = done_transcoding
+
+    def set_transcode_timestamp(self, transcode_timestamp):
+        self.transcode_timestamp = transcode_timestamp
+
+    def set_transcode_file_size(self, transcode_file_size):
+        self.transcode_file_size = transcode_file_size
+
+    def set_original_file_size(self, original_file_size):
+        self.original_file_size = original_file_size
