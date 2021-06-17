@@ -33,7 +33,8 @@ class Handler(FileSystemEventHandler):
     @staticmethod
     def on_any_event(event):
         if not event.is_directory and event.event_type == 'created':
-            imdb_id, file_extension = os.path.splitext(event.src_path)
+            file_name, file_extension = os.path.splitext(event.src_path)
+            imdb_id = os.path.basename(file_name)
             file_extension = file_extension.lstrip('.')
             data = {'imdb_id': imdb_id, 'file_extension': file_extension}
             post_response = requests.post(
