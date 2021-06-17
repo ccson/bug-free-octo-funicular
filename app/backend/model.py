@@ -1,4 +1,6 @@
-from . import app, db
+from . import db
+
+import json
 
 
 class Movie(db.Model):
@@ -22,6 +24,18 @@ class Movie(db.Model):
         self.genres = genres
         self.poster_artwork = poster_artwork
         self.rating = rating
+
+    def __repr__(self):
+        return json.dumps({
+            'imdb_id': self.imdb_id,
+            'title_name': self.title_name,
+            'release_year': self.release_year,
+            'film_rating': self.film_rating,
+            'runtime': self.runtime,
+            'genres': self.genres,
+            'poster_artwork': self.poster_artwork,
+            'rating': str(self.rating),
+        })
 
 
 class TranscodingMetadata(db.Model):
@@ -48,3 +62,12 @@ class TranscodingMetadata(db.Model):
 
     def set_original_file_size(self, original_file_size):
         self.original_file_size = original_file_size
+
+    def __repr__(self):
+        return json.dumps({
+            'imdb_id': self.imdb_id,
+            'done_transcoding': self.done_transcoding,
+            'transcode_timestamp': self.transcode_timestamp.strftime('%Y-%m-%dT%H:%M:%S.%f'),
+            'transcode_file_size': self.transcode_file_size,
+            'original_file_size': self.original_file_size
+        })
