@@ -31,4 +31,6 @@ COPY . /app
 
 EXPOSE 80
 
-CMD ["pipenv", "run", "python3", "-m" , "flask", "run", "--host", "0.0.0.0", "--port", "80"]
+COPY entrypoint.sh entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]
