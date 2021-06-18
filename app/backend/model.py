@@ -7,6 +7,7 @@ class Movie(db.Model):
     __tablename__ = 'movie'
 
     imdb_id = db.Column(db.String(24), primary_key=True)
+    tmdb_id = db.Column(db.String(24))
     title_name = db.Column(db.String(256))
     release_year = db.Column(db.SmallInteger())
     film_rating = db.Column(db.String(12))
@@ -15,8 +16,9 @@ class Movie(db.Model):
     poster_artwork = db.Column(db.String(256))
     rating = db.Column(db.Numeric())
 
-    def __init__(self, imdb_id, title_name, release_year, film_rating, runtime, genres, poster_artwork, rating):
+    def __init__(self, imdb_id, tmdb_id, title_name, release_year, film_rating, runtime, genres, poster_artwork, rating):
         self.imdb_id = imdb_id
+        self.tmdb_id = tmdb_id
         self.title_name = title_name
         self.release_year = release_year
         self.film_rating = film_rating
@@ -28,6 +30,7 @@ class Movie(db.Model):
     def __repr__(self):
         return json.dumps({
             'imdb_id': self.imdb_id,
+            'tmdb_id': self.tmdb_id,
             'title_name': self.title_name,
             'release_year': self.release_year,
             'film_rating': self.film_rating,

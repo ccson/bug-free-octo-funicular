@@ -1,14 +1,17 @@
+import logging
 import os
 import requests
-import sys
 import time
 from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler, EVENT_TYPE_CREATED, EVENT_TYPE_MODIFIED
+
+LOGGER = logging.getLogger('FILESYSTEM_POLLER')
+LOGGER.setLevel('INFO')
 
 
 class Watcher(object):
 
-    WATCH_DIRECTORY = "/uploads"
+    WATCH_DIRECTORY = os.getenv('UPLOADS_FOLDER')
     SLEEP_INTERVAL = 10
 
     def __init__(self):
@@ -23,7 +26,7 @@ class Watcher(object):
                 time.sleep(Watcher.SLEEP_INTERVAL)
         except:
             self.observer.stop()
-            print("Observer Stopped")
+            LOGGER.error('Observer Stopped')
 
         self.observer.join()
 
@@ -32,17 +35,20 @@ class Handler(FileSystemEventHandler):
 
     @staticmethod
     def on_any_event(event):
-        if not event.is_directory and event.event_type == 'created':
-            file_name, file_extension = os.path.splitext(event.src_path)
-            imdb_id = os.path.basename(file_name)
-            file_extension = file_extension.lstrip('.')
-            data = {'imdb_id': imdb_id, 'file_extension': file_extension}
-            post_response = requests.post(
-                url='http://backend:80/transcode',
-                json=data,
-                headers={'Content-Type': 'application/json'}
-            )
-            post_response.raise_for_status()
+        try:
+            if not event.is_directory and event.event_type in (EVENT_TYPE_CREATED, EVENT_TYPE_MODIFIED):
+                file_name, file_extension = os.path.splitext(event.src_path)
+                imdb_id = os.path.basename(file_name)
+                file_extension = file_extension.lstrip('.')
+                data = {'imdb_id': imdb_id, 'file_extension': file_extension}
+                post_response = requests.post(
+                    url='http://backend:80/transcode',
+                    json=data,
+                    headers={'Content-Type': 'application/json'}
+                )
+                post_response.raise_for_status()
+        except:
+            LOGGER.error(f'Event Completed Unsuccessfuly For File ({event.src_path})')
 
 
 if __name__ == '__main__':

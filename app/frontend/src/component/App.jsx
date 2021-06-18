@@ -34,7 +34,7 @@ export default class App extends React.Component {
           <td> {item.film_rating} </td>
           <td> {item.runtime} </td>
           <td> {item.genres} </td>
-          <td> {item.poster_artwork} </td>
+          <td> <img src={item.poster_artwork}></img> </td>
           <td> {item.rating} </td>
           <td> {item.transcode_timestamp} </td>
           <td> {item.transcode_file_size} </td>

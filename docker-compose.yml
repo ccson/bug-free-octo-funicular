@@ -9,6 +9,8 @@ services:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: app
+    ports:
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app"]
       interval: 10s
@@ -20,28 +22,31 @@ services:
       context: app/backend
     container_name: backend
     restart: always
+    environment:
+      UPLOADS_FOLDER: ${UPLOADS_FOLDER}
+      COMPLETE_FOLDER: ${COMPLETE_FOLDER}
     depends_on:
       postgres:
         condition: service_healthy
-#    healthcheck:
-#      test: curl -f http://localhost:8080/ || exit 1
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
+    healthcheck:
+      test: curl -f -s http://localhost:80/health_check || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - "8080:80"
     volumes:
-      - $HOME/uploads:/uploads
-      - $HOME/complete:/complete
+      - $HOME${UPLOADS_FOLDER}:${UPLOADS_FOLDER}
+      - $HOME${COMPLETE_FOLDER}:${COMPLETE_FOLDER}
 
   frontend:
     build:
       context: app/frontend
     container_name: frontend
     restart: always
-#    depends_on:
-#      backend:
-#        condition: service_healthy
+    depends_on:
+      backend:
+        condition: service_healthy
     ports:
       - "80:3000"
 
@@ -50,9 +55,11 @@ services:
       context: app/filesystem_poller
     container_name: filesystem_poller
     restart: always
-#    depends_on:
-#      backend:
-#        condition: service_healthy
+    environment:
+      UPLOADS_FOLDER: ${UPLOADS_FOLDER}
+    depends_on:
+      backend:
+        condition: service_healthy
     volumes:
-      - $HOME/uploads:/uploads
-      - $HOME/complete:/complete
+      - $HOME${UPLOADS_FOLDER}:${UPLOADS_FOLDER}
+      - $HOME${COMPLETE_FOLDER}:${COMPLETE_FOLDER}
