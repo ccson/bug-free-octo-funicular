@@ -31,6 +31,7 @@ def get_movie_details():
         .query(Movie, TranscodingMetadata) \
         .join(TranscodingMetadata, Movie.imdb_id == TranscodingMetadata.imdb_id) \
         .filter(TranscodingMetadata.done_transcoding == True) \
+        .order_by(TranscodingMetadata.transcode_timestamp.desc()) \
         .all()
     result = [{**(json.loads(str(row[0]))), **(json.loads(str(row[1])))} for row in result]
     response = jsonify(result)
