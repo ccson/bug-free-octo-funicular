@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 const config = {
   entry: './src/index.js',
@@ -28,7 +29,12 @@ const config = {
       '.js',
       '.jsx'
     ]
-  }
+  },
+  plugins: [
+    new Dotenv({
+      path: '.env'
+    })
+  ]
 };
 
 module.exports = config;

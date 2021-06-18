@@ -28,6 +28,7 @@ FROM nginx:stable-alpine
 
 # Static build
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/public /usr/share/nginx/html
 
 ## Add bash
 RUN apk add --no-cache bash
