@@ -13,6 +13,12 @@ RUN npm install --silent
 
 COPY . ./
 
+## Copy .env file and shell script to container
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL $REACT_APP_BACKEND_URL
+RUN touch .env
+RUN echo "REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL" >> .env
+
 RUN npm run build
 
 #------------------------
@@ -20,8 +26,13 @@ RUN npm run build
 #------------------------
 FROM nginx:stable-alpine
 
+# Static build
 COPY --from=build /app/build /usr/share/nginx/html
 
+## Add bash
+RUN apk add --no-cache bash
+
+# Default port exposure
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
