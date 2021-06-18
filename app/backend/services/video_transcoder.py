@@ -7,8 +7,8 @@ from datetime import datetime
 
 class VideoTranscoder(object):
 
-    INPUT_FOLDER = '/uploads'
-    OUTPUT_FOLDER = '/complete'
+    INPUT_FOLDER = os.getenv('UPLOADS_FOLDER')
+    OUTPUT_FOLDER = os.getenv('COMPLETE_FOLDER')
     OUTPUT_CODEC = 'h264'
     VIDEO_BITRATE = '1000'
 
