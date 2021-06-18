@@ -19,7 +19,7 @@ ENV REACT_APP_BACKEND_URL $REACT_APP_BACKEND_URL
 RUN touch .env
 RUN echo "REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL" >> .env
 
-RUN npm run build
+RUN npm run build-prod
 
 #------------------------
 # Production Env
@@ -27,7 +27,7 @@ RUN npm run build
 FROM nginx:stable-alpine
 
 # Static build
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 ## Add bash
 RUN apk add --no-cache bash
