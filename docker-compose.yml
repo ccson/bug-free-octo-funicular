@@ -42,10 +42,10 @@ services:
   frontend:
     build:
       context: app/frontend
+      args:
+        REACT_APP_BACKEND_URL: ${BACKEND_URL}
     container_name: frontend
     restart: always
-    environment:
-      BACKEND_URL: ${BACKEND_URL}
     depends_on:
       backend:
         condition: service_healthy
