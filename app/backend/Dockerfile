@@ -8,8 +8,10 @@ ENV LC_ALL C.UTF-8
 ENV FLASK_APP app
 
 # Creates the source and destination folders for the video transcoding process
-RUN mkdir /uploads
-RUN mkdir /complete
+ARG UPLOADS_FOLDER
+ARG COMPLETE_FOLDER
+RUN mkdir $UPLOADS_FOLDER
+RUN mkdir $COMPLETE_FOLDER
 
 WORKDIR /app
 

@@ -20,6 +20,9 @@ services:
   backend:
     build:
       context: app/backend
+      args:
+        UPLOADS_FOLDER: ${UPLOADS_FOLDER}
+        COMPLETE_FOLDER: ${COMPLETE_FOLDER}
     container_name: backend
     restart: always
     environment:
@@ -55,6 +58,9 @@ services:
   filesystem_poller:
     build:
       context: app/filesystem_poller
+      args:
+        UPLOADS_FOLDER: ${UPLOADS_FOLDER}
+        COMPLETE_FOLDER: ${COMPLETE_FOLDER}
     container_name: filesystem_poller
     restart: always
     environment:
