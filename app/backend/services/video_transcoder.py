@@ -6,6 +6,9 @@ from datetime import datetime
 
 
 class VideoTranscoder(object):
+    '''
+    Service that transcodes video files from the file system
+    '''
 
     INPUT_FOLDER = os.getenv('UPLOADS_FOLDER')
     OUTPUT_FOLDER = os.getenv('COMPLETE_FOLDER')
@@ -26,6 +29,10 @@ class VideoTranscoder(object):
         self.output_file_pathlib = pathlib.Path(self.output_file_full_path)
 
     def run(self):
+        '''
+        Runs the process to transcode the file from the source codec to the target codec.
+        This process will ingest the source video file and output the transcoded target file.
+        '''
         stream = ffmpeg.input(self.input_file_full_path)
         stream = ffmpeg.hflip(stream)
         stream = ffmpeg.output(stream, self.output_file_full_path, **{
@@ -36,16 +43,33 @@ class VideoTranscoder(object):
         ffmpeg.run(stream, overwrite_output=True)
 
     def get_transcode_timestamp(self):
+        '''
+        Getter method for the `transcode_timestamp` field.
+        :return: datetime.datetime
+        '''
         self._check_output_file_exists()
         return datetime.fromtimestamp(self.output_file_pathlib.stat().st_mtime)
 
     def get_output_file_size(self):
+        '''
+        Getter method for the `output_file_size` field.
+        Returns the size of the file in bytes.
+        :return: int
+        '''
         self._check_output_file_exists()
         return self.output_file_pathlib.stat().st_size
 
     def get_input_file_size(self):
+        '''
+        Getter method for the `input_file_size` field.
+        Returns the size of the file in bytes.
+        :return:
+        '''
         return self.input_file_size
 
     def _check_output_file_exists(self):
+        '''
+        A helper method to help check if the output/completed transcoded file exists or not.
+        '''
         if not self.output_file_pathlib.exists():
             raise FileNotFoundError(f'File ({self.output_file_pathlib.name}) Not Found')

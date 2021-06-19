@@ -5,12 +5,15 @@ FROM node:14.17.1-alpine as build
 
 WORKDIR /app
 
+# Adds the node modules to the PATH variable
 ENV PATH /app/node_modules/.bin:$PATH
 
+# Copies the node package configurations and installs the packages
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm install --silent
 
+# Copies the application files
 COPY . ./
 
 ## Copy .env file and shell script to container
@@ -19,6 +22,7 @@ ENV REACT_APP_BACKEND_URL $REACT_APP_BACKEND_URL
 RUN touch .env
 RUN echo "REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL" >> .env
 
+# Builds the `prod` distribution package
 RUN npm run build-prod
 
 #------------------------

@@ -13,6 +13,7 @@ export default class App extends React.Component {
     this.getMovieList();
   }
 
+  // Hits the backend application server to fetch movie details
   getMovieList() {
     fetch(`http://${process.env.REACT_APP_BACKEND_URL}:8080/movie_details`)
       .then(res => res.json())
