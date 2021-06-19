@@ -13,7 +13,7 @@ class TmdbService(object):
     API_VERSION = 3
     FIND_MOVIE_USING_IMDB_ID_BASE_URL = f'{API_BASE_URL}/{API_VERSION}/find/{{imdb_id}}'
     MOVIE_DETAILS_BASE_URL = f'{API_BASE_URL}/{API_VERSION}/movie/{{tmdb_id}}'
-    API_KEY = '0cc618d6f56c44414a4f82520b76f45f'
+    API_KEY = 'XXXXX'
 
     POSTER_BASE_URL = 'http://image.tmdb.org/t/p'
     POSTER_SIZE = 'w92'
