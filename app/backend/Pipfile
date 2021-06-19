@@ -10,3 +10,6 @@ Flask-Migrate = "==3.0.1"
 Flask-SQLAlchemy = "==2.5.1"
 psycopg2 = "==2.8.6"
 requests = "==2.25.1"
+
+[requires]
+python_version = "3.9"
