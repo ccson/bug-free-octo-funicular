@@ -48,6 +48,61 @@ This app is run with 4 Docker containers that serve as different components of t
 ## Usage
 
 ### Application Args
-* `UPLOADS_FOLDER` -> 
-* `COMPLETE_FOLDER` ->
-* `BACKEND_URL` -> 
+
+Here are 3 required, command-line arguments to the application:
+* `UPLOADS_FOLDER` -> The name of the input/source video folder. Please prepend a `/` to the path. This will
+    map the folder from your $HOME path to the root of the application filesystem. For example, if you set this to be
+    `/uploads`, then this will create a mapped volume from the `$HOME/uploads` path in the local machine to the
+    `/uploads` path in the root of the Docker/application filesystem.
+* `COMPLETE_FOLDER` -> The name of the target/destination video folder for transcoded video files. Please prepend a `/` to the path.
+    This will map the folder from your $HOME path to the root of the application filesystem. For example, if you set this to be
+    `/uploads`, then this will create a mapped volume from the `$HOME/uploads` path in the local machine to the
+    `/uploads` path in the root of the Docker/application filesystem.
+* `BACKEND_URL` -> The URL to the backend application server.
+
+### Running Application Locally
+
+Command to run the application:
+
+```bash
+UPLOADS_FOLDER=/uploads \
+COMPLETE_FOLDER=/complete \
+BACKEND_URL=localhost \
+docker-compose up --build --detach
+```
+Since we're running this application on our local machines, the URL to the backend application server will be
+`localhost`.
+
+Copy a video file to the application source folder:
+```bash
+cp /path/to/videos/tt0295297.mp4 ~/uploads/tt0295297.mp4
+```
+
+### Running Application in AWS EC2
+
+Command to run the application:
+
+```bash
+UPLOADS_FOLDER=/uploads \
+COMPLETE_FOLDER=/complete \
+BACKEND_URL=$(curl http://169.254.169.254/latest/meta-data/public-hostname) \
+docker-compose up --build --detach
+```
+
+The `$(curl http://169.254.169.254/latest/meta-data/public-hostname)` is a command to fetch the Public IPV4 DNS
+of the EC2 Instance itself. More [information](https://unix.stackexchange.com/questions/24355/is-there-a-way-to-get-the-public-dns-address-of-an-instance) here.
+
+Command to SSH into the AWS EC2 Instance:
+
+```bash
+ssh -i /path/to/pem/test.pem \ 
+ec2-user@<AWS EC2 INSTANCE PUBLIC DNS>
+```
+
+Command to upload files to the AWS EC2 Instance:
+
+```bash
+scp -i /path/to/pem/test.pem \ 
+/path/to/videos/tt0241527.mp4  \
+ec2-user@<AWS EC2 INSTANCE PUBLIC DNS>:~/uploads/tt0241527.mp4
+```
