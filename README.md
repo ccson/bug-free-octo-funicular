@@ -59,6 +59,7 @@ Here are 3 required, command-line arguments to the application:
     `/uploads`, then this will create a mapped volume from the `$HOME/uploads` path in the local machine to the
     `/uploads` path in the root of the Docker/application filesystem.
 * `BACKEND_URL` -> The URL to the backend application server.
+* `TMDB_API_KEY` -> The TMDB V3 API Key to use to authenticate when fetching movie details from the TMDB API
 
 ### Running Application Locally
 
@@ -68,6 +69,7 @@ Command to run the application:
 UPLOADS_FOLDER=/uploads \
 COMPLETE_FOLDER=/complete \
 BACKEND_URL=localhost \
+TMDB_API_KEY=XXXXXX \
 docker-compose up --build --detach
 ```
 Since we're running this application on our local machines, the URL to the backend application server will be
@@ -85,6 +87,7 @@ Command to run the application:
 ```bash
 UPLOADS_FOLDER=/uploads \
 COMPLETE_FOLDER=/complete \
+TMDB_API_KEY=XXXXXX \
 BACKEND_URL=$(curl http://169.254.169.254/latest/meta-data/public-hostname) \
 docker-compose up --build --detach
 ```
