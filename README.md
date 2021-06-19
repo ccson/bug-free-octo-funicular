@@ -50,8 +50,14 @@ This app is run with 4 Docker containers that serve as different components of t
 ### Application Args
 
 Here are 3 required, command-line arguments to the application:
-* `UPLOADS_FOLDER` -> The name of the input/source video folder. 
-* `COMPLETE_FOLDER` -> The name of the target/destination video folder for transcoded video files.
+* `UPLOADS_FOLDER` -> The name of the input/source video folder. Please prepend a `/` to the path. This will
+    map the folder from your $HOME path to the root of the application filesystem. For example, if you set this to be
+    `/uploads`, then this will create a mapped volume from the `$HOME/uploads` path in the local machine to the
+    `/uploads` path in the root of the Docker/application filesystem.
+* `COMPLETE_FOLDER` -> The name of the target/destination video folder for transcoded video files. Please prepend a `/` to the path.
+    This will map the folder from your $HOME path to the root of the application filesystem. For example, if you set this to be
+    `/uploads`, then this will create a mapped volume from the `$HOME/uploads` path in the local machine to the
+    `/uploads` path in the root of the Docker/application filesystem.
 * `BACKEND_URL` -> The URL to the backend application server.
 
 ### Running Application Locally
@@ -64,6 +70,8 @@ COMPLETE_FOLDER=/complete \
 BACKEND_URL=localhost \
 docker-compose up --build --detach
 ```
+Since we're running this application on our local machines, the URL to the backend application server will be
+`localhost`.
 
 Copy a video file to the application source folder:
 ```bash
