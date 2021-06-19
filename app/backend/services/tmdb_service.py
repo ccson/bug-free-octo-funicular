@@ -1,3 +1,4 @@
+import os
 import requests
 
 from datetime import datetime
@@ -13,10 +14,10 @@ class TmdbService(object):
     API_VERSION = 3
     FIND_MOVIE_USING_IMDB_ID_BASE_URL = f'{API_BASE_URL}/{API_VERSION}/find/{{imdb_id}}'
     MOVIE_DETAILS_BASE_URL = f'{API_BASE_URL}/{API_VERSION}/movie/{{tmdb_id}}'
-    API_KEY = 'XXXXX'
+    API_KEY = os.getenv('TMDB_API_KEY')
 
     POSTER_BASE_URL = 'http://image.tmdb.org/t/p'
-    POSTER_SIZE = 'w92'
+    POSTER_SIZE = 'w92'  # Use a small poster size for aesthetics purposes
 
     @staticmethod
     def get_movie_details(imdb_id):
