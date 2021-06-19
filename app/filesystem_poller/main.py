@@ -51,6 +51,8 @@ class Handler(FileSystemEventHandler):
         fetching the movie details from the TMDB ID.
         '''
         try:
+            # The EVENT_TYPE_MODIFIED is used to account for when a file is copied, since a copy doesn't trigger
+            # an EVENT_TYPE_CREATED instead.
             if not event.is_directory and event.event_type in (EVENT_TYPE_CREATED, EVENT_TYPE_MODIFIED):
                 file_name, file_extension = os.path.splitext(event.src_path)
                 imdb_id = os.path.basename(file_name)

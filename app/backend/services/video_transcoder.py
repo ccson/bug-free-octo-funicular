@@ -12,8 +12,8 @@ class VideoTranscoder(object):
 
     INPUT_FOLDER = os.getenv('UPLOADS_FOLDER')
     OUTPUT_FOLDER = os.getenv('COMPLETE_FOLDER')
-    OUTPUT_CODEC = 'h264'
-    VIDEO_BITRATE = '1000'
+    OUTPUT_CODEC = 'libx264'
+    VIDEO_BITRATE = '1M'
 
     def __init__(self, imdb_id, file_extension):
         self.imdb_id = imdb_id
