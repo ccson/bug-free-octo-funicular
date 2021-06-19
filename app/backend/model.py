@@ -4,6 +4,10 @@ import json
 
 
 class Movie(db.Model):
+    '''
+    Table that stores the movie attributes fetched from the TMDB database
+    '''
+
     __tablename__ = 'movie'
 
     imdb_id = db.Column(db.String(24), primary_key=True)
@@ -42,6 +46,10 @@ class Movie(db.Model):
 
 
 class TranscodingMetadata(db.Model):
+    '''
+    Table that stores all the metadata related to the video transcoding process
+    '''
+
     __tablename__ = 'transcoding_metadata'
 
     imdb_id = db.Column(db.String(24), primary_key=True)

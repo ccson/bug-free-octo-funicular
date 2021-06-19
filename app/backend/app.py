@@ -1,7 +1,6 @@
 import json
 
 from flask import request, jsonify
-from sqlalchemy.orm import contains_eager
 
 from . import app, db
 from .model import Movie, TranscodingMetadata
@@ -16,17 +15,26 @@ with app.app_context():
 
 @app.route('/')
 def root():
+    '''
+    Root URL API. This serves no function for the application.
+    '''
     return 'Welcome!'
 
 
 @app.route('/health_check')
 def health_check():
+    '''
+    API for health checking. This will run a simple query against the Database.
+    '''
     db.engine.execute('SELECT 1')
     return '', 200
 
 
 @app.route('/movie_details', methods=['GET'])
 def get_movie_details():
+    '''
+    Fetches the movie details from the application database
+    '''
     result = db.session \
         .query(Movie, TranscodingMetadata) \
         .join(TranscodingMetadata, Movie.imdb_id == TranscodingMetadata.imdb_id) \
@@ -41,6 +49,11 @@ def get_movie_details():
 
 @app.route('/transcode', methods=['POST'])
 def transcode_video():
+    '''
+    1) Transcodes the video
+    2) Logs the status of the transcoding process in the application database
+    3) Gets the IMDB ID from the input file name and fetches the TMDB movie details using this ID
+    '''
     json_response = json.loads(request.get_data())
     imdb_id = json_response['imdb_id']
     file_extension = json_response['file_extension']
